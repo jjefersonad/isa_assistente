@@ -1,0 +1,14 @@
+{
+  "venvPath": "server",
+  "venv": ".venv",
+  "reportMissingModuleSource": "none",
+  "executionEnvironments": [
+    {
+      "root": "firmware",
+      "pythonVersion": "3.12",
+      "extraPaths": [".venv-ide/lib/python3.12/site-packages"],
+      "reportAttributeAccessIssue": "none"
+    },
+    { "root": "server" }
+  ]
+}

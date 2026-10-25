@@ -1,0 +1,15 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Servidor (deepagents)",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/server/main.py",
+      "cwd": "${workspaceFolder}/server",
+      "python": "${workspaceFolder}/server/.venv/bin/python",
+      "envFile": "${workspaceFolder}/server/.env",
+      "console": "integratedTerminal"
+    }
+  ]
+}

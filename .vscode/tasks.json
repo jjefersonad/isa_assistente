@@ -1,0 +1,30 @@
+{
+  "version": "2.0.0",
+  "options": { "cwd": "${workspaceFolder}/firmware" },
+  "tasks": [
+    {
+      "label": "Placa: enviar arquivo atual",
+      "type": "shell",
+      "command": "sg dialout -c \"$HOME/.local/bin/mpremote cp ${file} :\"",
+      "problemMatcher": []
+    },
+    {
+      "label": "Placa: rodar arquivo atual (sem gravar)",
+      "type": "shell",
+      "command": "sg dialout -c \"$HOME/.local/bin/mpremote run ${file}\"",
+      "problemMatcher": []
+    },
+    {
+      "label": "Placa: enviar tudo e reiniciar",
+      "type": "shell",
+      "command": "sg dialout -c \"for f in *.py; do $HOME/.local/bin/mpremote cp $f :; done; $HOME/.local/bin/mpremote reset\"",
+      "problemMatcher": []
+    },
+    {
+      "label": "Placa: REPL",
+      "type": "shell",
+      "command": "sg dialout -c \"$HOME/.local/bin/mpremote\"",
+      "problemMatcher": []
+    }
+  ]
+}

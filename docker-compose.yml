@@ -1,0 +1,37 @@
+# API for the ESP32 agent (./api): speech-to-text (local Whisper) + text-to-speech (ElevenLabs > Supertonic > Piper).
+#   docker compose up -d --build                                              # CPU
+#   docker compose -f docker-compose.yml -f docker-compose.gpu.yml up -d --build   # NVIDIA GPU (falls back to CPU)
+# Config comes from .env (see .env.example).
+services:
+  api:
+    build: ./api
+    restart: unless-stopped
+    mem_limit: ${API_MEM_LIMIT:-4g}   # a runaway model kills only this container, not the machine
+    # run as the host user so the Hugging Face cache on the host is not filled with root-owned files
+    user: "${APP_UID:-1000}:${APP_GID:-1000}"
+    ports:
+      - "${SPEECH_PORT:-8800}:8800"
+    environment:
+      TZ: ${TZ:-America/Sao_Paulo}
+      WHISPER_MODEL: ${WHISPER_MODEL:-small}
+      WHISPER_COMPUTE_TYPE: ${WHISPER_COMPUTE_TYPE:-int8}
+      WHISPER_LANGUAGE: ${WHISPER_LANGUAGE:-pt}
+      PIPER_VOICE: ${PIPER_VOICE:-/models/piper/pt_BR-faber-medium.onnx}
+      TTS_BACKEND: ${TTS_BACKEND:-auto}
+      DEVICE: ${DEVICE:-auto}
+      SUPERTONIC_VOICE: ${SUPERTONIC_VOICE-F1}
+      SUPERTONIC_SPEED: ${SUPERTONIC_SPEED:-1.05}
+      SUPERTONIC_STEPS: ${SUPERTONIC_STEPS:-8}
+      ELEVENLABS_API_KEY: ${ELEVENLABS_API_KEY:-}
+      ELEVENLABS_VOICE_ID: ${ELEVENLABS_VOICE_ID:-}
+      ELEVENLABS_MODEL: ${ELEVENLABS_MODEL:-eleven_multilingual_v2}
+    volumes:
+      - ./api/models:/models/piper:ro
+      - ${HF_CACHE:-${HOME}/.cache/huggingface}:/models/hf
+      - ${SUPERTONIC_CACHE:-${HOME}/.cache/supertonic3}:/models/supertonic   # ~390 MB, downloaded on the first start
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://localhost:8800/health', timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 90s

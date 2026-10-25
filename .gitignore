@@ -1,0 +1,13 @@
+.env
+.venv/
+__pycache__/
+.ruff_cache/
+.pytest_cache/
+firmware/bin/
+firmware/config.json
+.venv-ide/
+api/models/
+api/.env
+server/workspace/
+design/
+firmware/avatar/

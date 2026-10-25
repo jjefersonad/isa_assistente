@@ -1,0 +1,5 @@
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}/server/.venv/bin/python",
+  "python.analysis.typeCheckingMode": "basic",
+  "files.exclude": { "**/__pycache__": true }
+}

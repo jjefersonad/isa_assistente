@@ -1,0 +1,15 @@
+# NVIDIA GPU for the speech API (Whisper + Supertonic). Needs the NVIDIA Container Toolkit on the host.
+#   docker compose -f docker-compose.yml -f docker-compose.gpu.yml up -d --build
+# Without a GPU the same image still works on the CPU (DEVICE=auto).
+services:
+  api:
+    build:
+      args:
+        GPU: "1"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
